@@ -31,13 +31,23 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dist-files #artifact name
-          # where this file will be stored, second path is just to show multiple paths so is redundaant
-          path: |
-            dist
-            dist.json
+          path: dist
+          # # where the file will be stored, second path is just to show multiple paths so is redundaant
+          # path: |
+          #   dist
+          #   dist.json
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files # has to be the same name with the upload artifact, this ensures we download the right artifact
+
+        # list the contents of the folder in which we are
+      - name: list contents
+        run: ls -la
+
       - name: Deploy
         run: echo "Deploying..."
