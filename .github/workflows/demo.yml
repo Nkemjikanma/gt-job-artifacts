@@ -18,13 +18,20 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      script-filename: ${{ steps.publish-filename.outputs.script-file }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
       - name: Install dependencies
         run: npm ci
+
       - name: Build website
         run: npm run build
+
+      - name: publish js files name # get the js file name
+        id: publish-filename
+        run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';' # find js file in dist/assests folder and echo the filename
 
         # storing the artifact that has been built
       - name: store artifacts
@@ -48,6 +55,9 @@ jobs:
         # list the contents of the folder in which we are
       - name: list contents
         run: ls -la
+
+      - name: output filename
+        run: echo "${{ needs.build.outputs.script-filename}}"
 
       - name: Deploy
         run: echo "Deploying..."
