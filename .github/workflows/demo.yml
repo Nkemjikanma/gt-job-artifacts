@@ -13,8 +13,8 @@ jobs:
       - name: cache
         uses: actions/cache@v3
         with:
-          path: ˜/.npm
-          key: node-modules-${{ hashFiles('**/package-lock.json')}}
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
         run: npm ci
@@ -35,7 +35,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: node-modules-${{ hashFiles('**/package-lock.json')}}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
         run: npm ci
